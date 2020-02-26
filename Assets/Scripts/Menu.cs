@@ -17,7 +17,7 @@ public sealed class Menu : MonoBehaviour
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
-            _numbers[i].onClick.AddListener(() => { _result.text += num.ToString(); });
+            _numbers[i].onClick.AddListener(() => OnButtonClick(num));
         }
 
         _clear.onClick.AddListener(ClearResult);
@@ -25,6 +25,26 @@ public sealed class Menu : MonoBehaviour
 
         ClearResult();
         ShowExpression();
+    }
+
+    private void OnButtonClick(int num)
+    {
+        int.TryParse(_result.text, out int result);
+        if (num == 0 && string.IsNullOrEmpty(_result.text))
+        {
+            _result.text += num.ToString();
+            return;
+        }
+        switch (result)
+        {
+            case 0 when num == 0:
+                return;
+            case 0 when num != 0:
+                ClearResult();
+                break;
+        }
+
+        _result.text += num.ToString();
     }
 
     private void OnEnter()
