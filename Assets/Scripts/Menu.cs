@@ -7,10 +7,11 @@ public sealed class Menu : MonoBehaviour
     [SerializeField] private Button _enter = default;
     [SerializeField] private Button[] _numbers = default;
     [SerializeField] private Text _expression = default;
-    [SerializeField] private Text _result = default;
+    [SerializeField] private Text _userResult = default;
 
-    private int _term1;
-    private int _term2;
+    private int _number1;
+    private int _number2;
+    private int _result;
 
     private void Awake()
     {
@@ -24,15 +25,15 @@ public sealed class Menu : MonoBehaviour
         _enter.onClick.AddListener(OnEnter);
 
         ClearResult();
-        ShowExpression();
+        ShowAddExpression();
     }
 
     private void OnButtonClick(int num)
     {
-        int.TryParse(_result.text, out int result);
-        if (num == 0 && string.IsNullOrEmpty(_result.text))
+        int.TryParse(_userResult.text, out int result);
+        if (num == 0 && string.IsNullOrEmpty(_userResult.text))
         {
-            _result.text += num.ToString();
+            _userResult.text += num.ToString();
             return;
         }
         switch (result)
@@ -44,7 +45,7 @@ public sealed class Menu : MonoBehaviour
                 break;
         }
 
-        _result.text += num.ToString();
+        _userResult.text += num.ToString();
     }
 
     private void OnEnter()
@@ -53,29 +54,57 @@ public sealed class Menu : MonoBehaviour
         {
             ShowNewExpression();
         }
+        else
+        {
+            ClearResult();
+        }
     }
 
     //TODO: green result, block input for 2 sec
     private void ShowNewExpression()
     {
         ClearResult();
-        ShowExpression();
+        switch (Random.Range(0, 2))
+        {
+            case 0:
+                ShowAddExpression();
+                break;
+            case 1:
+                ShowSubExpression();
+                break;
+        }
     }
 
     private bool IsUserInputValid()
     {
-        return int.TryParse(_result.text, out var result) && result == _term1 + _term2;
+        return int.TryParse(_userResult.text, out var result) && result == _result;
     }
 
     private void ClearResult()
     {
-        _result.text = string.Empty;
+        _userResult.text = string.Empty;
     }
 
-    private void ShowExpression()
+    private void ShowAddExpression()
     {
-        _term1 = Random.Range(1, 10);
-        _term2 = Random.Range(1, 10);
-        _expression.text = $"{_term1.ToString()} + {_term2.ToString()} = ?";
+        _number1 = Random.Range(1, 10);
+        _number2 = Random.Range(1, 10);
+        _expression.text = $"{_number1.ToString()} + {_number2.ToString()} = ?";
+        _result = _number1 + _number2;
+    }
+
+    private void ShowSubExpression()
+    {
+        _number1 = Random.Range(1, 10);
+        _number2 = Random.Range(1, 10);
+        if (_number1 > _number2)
+        {
+            _expression.text = $"{_number1.ToString()} - {_number2.ToString()} = ?";
+            _result = _number1 - _number2;
+        }
+        else
+        {
+            ShowNewExpression();
+        }
     }
 }
