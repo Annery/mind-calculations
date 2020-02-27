@@ -24,8 +24,7 @@ public sealed class Menu : MonoBehaviour
         _clear.onClick.AddListener(ClearResult);
         _enter.onClick.AddListener(OnEnter);
 
-        ClearResult();
-        ShowAddExpression();
+       ShowNewExpression();
     }
 
     private void OnButtonClick(int num)
@@ -50,7 +49,7 @@ public sealed class Menu : MonoBehaviour
 
     private void OnEnter()
     {
-        if (IsUserInputValid())
+        if (IsUserAnswerCorrect())
         {
             ShowNewExpression();
         }
@@ -67,15 +66,15 @@ public sealed class Menu : MonoBehaviour
         switch (Random.Range(0, 2))
         {
             case 0:
-                ShowAddExpression();
+                GenerateAndPrintExpression("+");
                 break;
             case 1:
-                ShowSubExpression();
+                GenerateAndPrintExpression("-");
                 break;
         }
     }
 
-    private bool IsUserInputValid()
+    private bool IsUserAnswerCorrect()
     {
         return int.TryParse(_userResult.text, out var result) && result == _result;
     }
@@ -85,26 +84,29 @@ public sealed class Menu : MonoBehaviour
         _userResult.text = string.Empty;
     }
 
-    private void ShowAddExpression()
+    private void GenerateAndPrintExpression(string sign)
     {
         _number1 = Random.Range(1, 10);
         _number2 = Random.Range(1, 10);
-        _expression.text = $"{_number1.ToString()} + {_number2.ToString()} = ?";
-        _result = _number1 + _number2;
-    }
-
-    private void ShowSubExpression()
-    {
-        _number1 = Random.Range(1, 10);
-        _number2 = Random.Range(1, 10);
-        if (_number1 > _number2)
+        switch (sign)
         {
-            _expression.text = $"{_number1.ToString()} - {_number2.ToString()} = ?";
-            _result = _number1 - _number2;
+            case "+":
+                _result = _number1 + _number2;
+                break;
+            case "-":
+                if (_number1 > _number2)
+                {
+                    _result = _number1 - _number2;
+                }
+                else
+                {
+                    GenerateAndPrintExpression(sign);
+                }
+                break;
+            default:
+                Debug.LogErrorFormat("Unsupported sign : [{0}]", sign);
+                break;
         }
-        else
-        {
-            ShowNewExpression();
-        }
+        _expression.text = $"{_number1.ToString()} {sign} {_number2.ToString()} = ?";
     }
 }
