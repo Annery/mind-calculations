@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
-public sealed class Menu : MonoBehaviour
+public sealed class GameScreen : MonoBehaviour
 {
     [SerializeField] private Button _clear = default;
     [SerializeField] private Button _enter = default;
@@ -13,6 +15,7 @@ public sealed class Menu : MonoBehaviour
     [SerializeField] private Slider _slider = default;
     [SerializeField] private Image _sliderFill = default;
     [SerializeField] private Gradient _sliderColor = default;
+    [SerializeField] private EndScreen _endScreen = default;
 
     private const float MatchDuration = 20f;
     private const int MaxScore = 3;
@@ -44,6 +47,7 @@ public sealed class Menu : MonoBehaviour
     {
         if (IsMatchEnded())
         {
+            ShowEndScreen();
             return;
         }
         ShowTimer();
@@ -51,6 +55,25 @@ public sealed class Menu : MonoBehaviour
         CheckResult();
     }
 
+    private void ShowEndScreen()
+    {
+        _endScreen.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
+    public void ResetTimer()
+    {
+        ClearScore();
+        ShowScore();
+        ShowNewExpression();
+        _timeToEndMatch = MatchDuration;
+    }
+    
+    private void ShowResult(string result)
+    {
+        _endScreen.SetResult($"You {result}{Environment.NewLine}Score: {_currentScore}");
+        ClearTimer();
+    }
     private void ShowTimer()
     {
         _time.text = $"Time: {(int)_timeToEndMatch}";
@@ -61,23 +84,12 @@ public sealed class Menu : MonoBehaviour
     {
         if (Win())
         {
-            ShowResult("win");
-            ClearAll();
+            ShowResult("win!");
         }
         else if (Lose())
         {
             ShowResult("lose");
-            ClearAll();
         }
-    }
-
-    private void ClearAll()
-    {
-        ClearUserResult();
-        ClearScore();
-        ClearTimer();
-        ShowScore();
-        ShowTimer();
     }
 
     private void ClearTimer()
@@ -88,11 +100,6 @@ public sealed class Menu : MonoBehaviour
     private void ClearScore()
     {
         _currentScore = 0;
-    }
-
-    private void ShowResult(string result)
-    {
-        Debug.Log($"You {result}. Score: {_currentScore}");
     }
 
     private bool Lose()
