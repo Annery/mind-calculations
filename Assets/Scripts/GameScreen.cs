@@ -7,6 +7,7 @@ public sealed class GameScreen : MonoBehaviour
 {
     [SerializeField] private Button _clear = default;
     [SerializeField] private Button _enter = default;
+    [SerializeField] private Button _backspace = default;
     [SerializeField] private Button[] _numbers = default;
     [SerializeField] private Text _expression = default;
     [SerializeField] private Text _userResult = default;
@@ -33,11 +34,13 @@ public sealed class GameScreen : MonoBehaviour
             var num = i;
             _numbers[i].onClick.AddListener(() => OnButtonClick(num));
         }
+
         _slider.maxValue = MatchDuration;
         _timeToEndMatch = MatchDuration;
 
         _clear.onClick.AddListener(ClearUserResult);
         _enter.onClick.AddListener(OnEnter);
+        _backspace.onClick.AddListener(OnBackspace);
 
         ShowNewExpression();
         ShowScore();
@@ -50,6 +53,7 @@ public sealed class GameScreen : MonoBehaviour
             ShowEndScreen();
             return;
         }
+
         ShowTimer();
         UpdateTimer();
         CheckResult();
@@ -68,7 +72,7 @@ public sealed class GameScreen : MonoBehaviour
         ShowNewExpression();
         _timeToEndMatch = MatchDuration;
     }
-    
+
     private void ShowResult(string result)
     {
         _endScreen.SetResult($"You {result}{Environment.NewLine}Score: {_currentScore}");
@@ -77,8 +81,8 @@ public sealed class GameScreen : MonoBehaviour
 
     private void ShowTimer()
     {
-        _time.text = $"Time: {(int)_timeToEndMatch}";
-        _slider.value = (int)_timeToEndMatch;
+        _time.text = $"Time: {(int) _timeToEndMatch}";
+        _slider.value = (int) _timeToEndMatch;
     }
 
     private void CheckResult()
@@ -130,12 +134,14 @@ public sealed class GameScreen : MonoBehaviour
         {
             return;
         }
+
         int.TryParse(_userResult.text, out var result);
         if (number == 0 && string.IsNullOrEmpty(_userResult.text))
         {
             SetUserResult(number);
             return;
         }
+
         switch (result)
         {
             case 0 when number == 0:
@@ -144,6 +150,7 @@ public sealed class GameScreen : MonoBehaviour
                 ClearUserResult();
                 break;
         }
+
         SetUserResult(number);
     }
 
@@ -167,6 +174,13 @@ public sealed class GameScreen : MonoBehaviour
         {
             ClearUserResult();
         }
+    }
+
+    private void OnBackspace()
+    {
+        _userResult.text = string.IsNullOrEmpty(_userResult.text)
+            ? string.Empty
+            : _userResult.text.Substring(0, _userResult.text.Length - 1);
     }
 
     private void ShowScore()
@@ -227,6 +241,7 @@ public sealed class GameScreen : MonoBehaviour
                 {
                     GenerateAndPrintExpression(sign);
                 }
+
                 break;
             case "*":
                 _result = _number1 * _number2;
@@ -240,11 +255,13 @@ public sealed class GameScreen : MonoBehaviour
                 {
                     GenerateAndPrintExpression(sign);
                 }
+
                 break;
             default:
                 Debug.LogErrorFormat("Unsupported sign : [{0}]", sign);
                 break;
         }
+
         _expression.text = $"{_number1.ToString()} {sign} {_number2.ToString()} = ?";
     }
 }
