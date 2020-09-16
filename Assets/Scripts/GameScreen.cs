@@ -74,6 +74,7 @@ public sealed class GameScreen : MonoBehaviour
         _endScreen.SetResult($"You {result}{Environment.NewLine}Score: {_currentScore}");
         ClearTimer();
     }
+
     private void ShowTimer()
     {
         _time.text = $"Time: {(int)_timeToEndMatch}";
@@ -181,7 +182,7 @@ public sealed class GameScreen : MonoBehaviour
     private void ShowNewExpression()
     {
         ClearUserResult();
-        switch (Random.Range(0, 3))
+        switch (Random.Range(0, 4))
         {
             case 0:
                 GenerateAndPrintExpression("+");
@@ -191,6 +192,9 @@ public sealed class GameScreen : MonoBehaviour
                 break;
             case 2:
                 GenerateAndPrintExpression("*");
+                break;
+            case 3:
+                GenerateAndPrintExpression("/");
                 break;
         }
     }
@@ -226,6 +230,16 @@ public sealed class GameScreen : MonoBehaviour
                 break;
             case "*":
                 _result = _number1 * _number2;
+                break;
+            case "/":
+                if (_number1 % _number2 == 0)
+                {
+                    _result = _number1 / _number2;
+                }
+                else
+                {
+                    GenerateAndPrintExpression(sign);
+                }
                 break;
             default:
                 Debug.LogErrorFormat("Unsupported sign : [{0}]", sign);
