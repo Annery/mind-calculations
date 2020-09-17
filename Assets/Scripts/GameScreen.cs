@@ -75,14 +75,15 @@ public sealed class GameScreen : MonoBehaviour
 
     private void ShowResult(string result)
     {
-        _endScreen.SetResult($"You {result}{Environment.NewLine}Score: {_currentScore}");
+        _endScreen.SetResult($"You {result}{Environment.NewLine}" 
+                             + (Win() ? $"Score: {_currentScore}" : string.Empty));
         ClearTimer();
     }
 
     private void ShowTimer()
     {
-        _time.text = $"Time: {(int) _timeToEndMatch}";
-        _slider.value = (int) _timeToEndMatch;
+        _time.text = $"Time: {(int)_timeToEndMatch}";
+        _slider.value = (int)_timeToEndMatch;
     }
 
     private void CheckResult()
