@@ -26,21 +26,23 @@ public sealed class GameScreen : MonoBehaviour
     private int _result;
     private int _currentScore;
     private float _timeToEndMatch;
+    private string[] _signs;
 
-    private void Awake()
+    public void Initialize(string[] signs)
     {
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
-            _numbers[i].onClick.AddListener(() => OnButtonClick(num));
+            _numbers[i].ReplaceOnClick(() => OnButtonClick(num));
         }
 
         _slider.maxValue = MatchDuration;
         _timeToEndMatch = MatchDuration;
+        _signs = signs;
 
-        _clear.onClick.AddListener(ClearUserResult);
-        _enter.onClick.AddListener(OnEnter);
-        _backspace.onClick.AddListener(OnBackspace);
+        _clear.ReplaceOnClick(ClearUserResult);
+        _enter.ReplaceOnClick(OnEnter);
+        _backspace.ReplaceOnClick(OnBackspace);
 
         ShowNewExpression();
         ShowScore();
@@ -197,21 +199,8 @@ public sealed class GameScreen : MonoBehaviour
     private void ShowNewExpression()
     {
         ClearUserResult();
-        switch (Random.Range(0, 4))
-        {
-            case 0:
-                GenerateAndPrintExpression("+");
-                break;
-            case 1:
-                GenerateAndPrintExpression("-");
-                break;
-            case 2:
-                GenerateAndPrintExpression("*");
-                break;
-            case 3:
-                GenerateAndPrintExpression("/");
-                break;
-        }
+        var signIndex = Random.Range(0, _signs.Length);
+        GenerateAndPrintExpression(_signs[signIndex]);
     }
 
     private bool IsUserAnswerCorrect()
@@ -265,4 +254,4 @@ public sealed class GameScreen : MonoBehaviour
 
         _expression.text = $"{_number1.ToString()} {sign} {_number2.ToString()} = ?";
     }
-}
+}   
