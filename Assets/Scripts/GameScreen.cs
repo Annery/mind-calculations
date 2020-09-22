@@ -27,9 +27,12 @@ public sealed class GameScreen : MonoBehaviour
     private int _currentScore;
     private float _timeToEndMatch;
     private string[] _signs;
+    private Save _save;
 
     public void Initialize(string[] signs)
     {
+        _save = Resources.Load<Save>("Save");
+
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
@@ -77,8 +80,12 @@ public sealed class GameScreen : MonoBehaviour
 
     private void ShowResult(string result)
     {
-        _endScreen.SetResult($"You {result}{Environment.NewLine}" 
-                             + (Win() ? $"Score: {_currentScore}" : string.Empty));
+        _endScreen.SetResult($"You {result}{Environment.NewLine}"
+                             + (Win() ? $"Score: {_currentScore}" : string.Empty),
+                            $"TotalScore {_save.TotalScore}{Environment.NewLine}" +
+                            $"BestTime {_save.BestTime}{Environment.NewLine}" +
+                            $"SessionCount {_save.SessionCount}{Environment.NewLine}" +
+                            $"WinCount {_save.WinCount}{Environment.NewLine}");
         ClearTimer();
     }
 
@@ -92,10 +99,18 @@ public sealed class GameScreen : MonoBehaviour
     {
         if (Win())
         {
+            _save.WinCount++;
+            _save.SessionCount++;
+            _save.TotalScore += MaxScore;
+            if ((int)_timeToEndMatch > _save.BestTime)
+            {
+                _save.BestTime = (int)_timeToEndMatch;
+            }
             ShowResult("win!");
         }
         else if (Lose())
         {
+            _save.SessionCount++;
             ShowResult("lose");
         }
     }
@@ -254,4 +269,4 @@ public sealed class GameScreen : MonoBehaviour
 
         _expression.text = $"{_number1.ToString()} {sign} {_number2.ToString()} = ?";
     }
-}   
+}
