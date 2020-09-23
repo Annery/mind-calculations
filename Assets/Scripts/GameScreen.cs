@@ -239,10 +239,17 @@ public sealed class GameScreen : MonoBehaviour
 
                 break;
             case "*":
-                _result = _number1 * _number2;
+                if (_number1 != 1 && _number2 != 1)
+                {
+                    _result = _number1 * _number2;
+                }
+                else
+                {
+                    GenerateAndPrintExpression(sign);
+                }
                 break;
             case "/":
-                if (_number1 % _number2 == 0)
+                if (_number1 % _number2 == 0 && _number1 != _number2 && _number2 != 1)
                 {
                     _result = _number1 / _number2;
                 }
