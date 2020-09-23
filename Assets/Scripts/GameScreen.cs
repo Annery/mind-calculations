@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public sealed class GameScreen : MonoBehaviour
 {
     [SerializeField] private Button _clear = default;
-    [SerializeField] private Button _enter = default;
     [SerializeField] private Button _backspace = default;
     [SerializeField] private Button[] _numbers = default;
     [SerializeField] private Text _expression = default;
@@ -44,7 +43,6 @@ public sealed class GameScreen : MonoBehaviour
         _signs = signs;
 
         _clear.ReplaceOnClick(ClearUserResult);
-        _enter.ReplaceOnClick(OnEnter);
         _backspace.ReplaceOnClick(OnBackspace);
 
         ShowNewExpression();
@@ -113,6 +111,12 @@ public sealed class GameScreen : MonoBehaviour
             _save.SessionCount++;
             ShowResult("lose");
         }
+        else if(IsUserAnswerCorrect())
+        {
+            ShowNewExpression();
+            UpdateScore();
+            ShowScore();
+        }
     }
 
     private void ClearTimer()
@@ -177,20 +181,6 @@ public sealed class GameScreen : MonoBehaviour
         if (_userResult.text.Length < MaxAnswerLength)
         {
             _userResult.text += result.ToString();
-        }
-    }
-
-    private void OnEnter()
-    {
-        if (IsUserAnswerCorrect())
-        {
-            ShowNewExpression();
-            UpdateScore();
-            ShowScore();
-        }
-        else
-        {
-            ClearUserResult();
         }
     }
 
