@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public sealed class StartScreen : MonoBehaviour
 {
     [SerializeField] private GameScreen _game = default;
+    [SerializeField] private StatisticsScreen _statisticsScreen = default;
     [SerializeField] private Button _start = default;
+    [SerializeField] private Button _statistics = default;
     [SerializeField] private ToggleWithDescription _toggleWithDescription = default;
     [SerializeField] private RectTransform _toggleRoot = default;
 
@@ -16,12 +18,20 @@ public sealed class StartScreen : MonoBehaviour
     private void Awake()
     {
         _start.ReplaceOnClick(StartGame);
+        _statistics.ReplaceOnClick(ShowStatisticsScreen);
         for (int i = 0; i < Operations.Length; i++)
         {
             var toggle = Instantiate(_toggleWithDescription, _toggleRoot);
             toggle.Initialize(Operations[i]);
             _toggles.Add(toggle);
         }
+    }
+
+    private void ShowStatisticsScreen()
+    {
+        _statisticsScreen.gameObject.SetActive(true);
+        _statisticsScreen.Initialize();
+        gameObject.SetActive(false);
     }
 
     private void StartGame()

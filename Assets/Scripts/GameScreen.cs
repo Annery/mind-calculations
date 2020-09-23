@@ -79,11 +79,7 @@ public sealed class GameScreen : MonoBehaviour
     private void ShowResult(string result)
     {
         _endScreen.SetResult($"You {result}{Environment.NewLine}"
-                             + (Win() ? $"Score: {_currentScore}" : string.Empty),
-                            $"TotalScore {_save.TotalScore}{Environment.NewLine}" +
-                            $"BestTime {_save.BestTime}{Environment.NewLine}" +
-                            $"SessionCount {_save.SessionCount}{Environment.NewLine}" +
-                            $"WinCount {_save.WinCount}{Environment.NewLine}");
+                             + (Win() ? $"Score: {_currentScore}" : string.Empty));
         ClearTimer();
     }
 

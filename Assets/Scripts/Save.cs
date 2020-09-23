@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Save", menuName = "Persistence/Save")]
 public sealed class Save : ScriptableObject

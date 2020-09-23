@@ -9,7 +9,6 @@ public sealed class EndScreen : MonoBehaviour
     [SerializeField] private Button _restart = default;
     [SerializeField] private Button _exit = default;
     [SerializeField] private Text _gameResult = default;
-    [SerializeField] private Text _statisticsResult = default;
 
     private void Awake()
     {
@@ -24,10 +23,9 @@ public sealed class EndScreen : MonoBehaviour
         _game.ResetTimer();
     }
 
-    public void SetResult(string textResult, string statistics)
+    public void SetResult(string textResult)
     {
         _gameResult.text = textResult;
-        _statisticsResult.text = statistics;
     }
 
     private void RestartGame()
