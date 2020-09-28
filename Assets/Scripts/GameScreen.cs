@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -25,10 +26,10 @@ public sealed class GameScreen : MonoBehaviour
     private int _result;
     private int _currentScore;
     private float _timeToEndMatch;
-    private string[] _signs;
+    private List<Operation> _signs;
     private Save _save;
 
-    public void Initialize(string[] signs)
+    public void Initialize(List<Operation> signs)
     {
         _save = Resources.Load<Save>("Save");
 
@@ -107,7 +108,7 @@ public sealed class GameScreen : MonoBehaviour
             _save.SessionCount++;
             ShowResult("lose");
         }
-        else if(IsUserAnswerCorrect())
+        else if (IsUserAnswerCorrect())
         {
             ShowNewExpression();
             UpdateScore();
@@ -200,7 +201,7 @@ public sealed class GameScreen : MonoBehaviour
     private void ShowNewExpression()
     {
         ClearUserResult();
-        var signIndex = Random.Range(0, _signs.Length);
+        var signIndex = Random.Range(0, _signs.Count);
         GenerateAndPrintExpression(_signs[signIndex]);
     }
 
@@ -214,52 +215,20 @@ public sealed class GameScreen : MonoBehaviour
         _userResult.text = string.Empty;
     }
 
-    private void GenerateAndPrintExpression(string sign)
+    private void GenerateAndPrintExpression(Operation operation)
     {
         _number1 = Random.Range(1, 10);
         _number2 = Random.Range(1, 10);
-        switch (sign)
+
+        if (operation.IsValid(_number1, _number2))
         {
-            case "+":
-                _result = _number1 + _number2;
-                break;
-            case "-":
-                if (_number1 > _number2)
-                {
-                    _result = _number1 - _number2;
-                }
-                else
-                {
-                    GenerateAndPrintExpression(sign);
-                }
-
-                break;
-            case "*":
-                if (_number1 != 1 && _number2 != 1)
-                {
-                    _result = _number1 * _number2;
-                }
-                else
-                {
-                    GenerateAndPrintExpression(sign);
-                }
-                break;
-            case "/":
-                if (_number1 % _number2 == 0 && _number1 != _number2 && _number2 != 1)
-                {
-                    _result = _number1 / _number2;
-                }
-                else
-                {
-                    GenerateAndPrintExpression(sign);
-                }
-
-                break;
-            default:
-                Debug.LogErrorFormat("Unsupported sign : [{0}]", sign);
-                break;
+            _result = operation.Calculate(_number1, _number2);
         }
-
-        _expression.text = $"{_number1.ToString()} {sign} {_number2.ToString()} = ?";
+        else
+        {
+            GenerateAndPrintExpression(operation);
+        }
+        
+        _expression.text = $"{_number1.ToString()} {operation.Name} {_number2.ToString()} = ?";
     }
 }

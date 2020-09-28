@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,17 +13,24 @@ public sealed class StartScreen : MonoBehaviour
     [SerializeField] private ToggleWithDescription _toggleWithDescription = default;
     [SerializeField] private RectTransform _toggleRoot = default;
 
-    private readonly string[] Operations = { "+", "-", "*", "/" };
+    private readonly List<Operation> _operations = new List<Operation>
+    {
+        new AdditionOperation(),
+        new SubtractionOperation(), 
+        new MultiplicationOperation(),
+        new DivisionOperation()
+    };
+
     private readonly List<ToggleWithDescription> _toggles = new List<ToggleWithDescription>();
 
     private void Awake()
     {
         _start.ReplaceOnClick(StartGame);
         _statistics.ReplaceOnClick(ShowStatisticsScreen);
-        for (int i = 0; i < Operations.Length; i++)
+        for (int i = 0; i < _operations.Count; i++)
         {
             var toggle = Instantiate(_toggleWithDescription, _toggleRoot);
-            toggle.Initialize(Operations[i]);
+            toggle.Initialize(_operations[i].Name);
             _toggles.Add(toggle);
         }
     }
@@ -36,20 +44,21 @@ public sealed class StartScreen : MonoBehaviour
 
     private void StartGame()
     {
-        var operations = GetSelectedOperations();
-        if (operations.Length == 0)
+        var selectedOperations = new List<Operation>();
+        foreach (var operationName in GetSelectedOperationNames())
+        {
+            selectedOperations.Add(_operations.Find(o => o.Name.Equals(operationName)));
+        }
+        if (selectedOperations.Count == 0)
         {
             return;
         }
-        _game.Initialize(operations);
+        _game.Initialize(selectedOperations);
         _game.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 
-    private string[] GetSelectedOperations()
-    {
-        return _toggles.Where(t => t.IsSelected)
-            .Select(t => t.Description)
-            .ToArray();
-    }
+    private IEnumerable<string> GetSelectedOperationNames() =>
+        _toggles.Where(t => t.IsSelected)
+            .Select(t => t.Description);
 }
