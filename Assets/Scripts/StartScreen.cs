@@ -30,7 +30,7 @@ public sealed class StartScreen : MonoBehaviour
         for (int i = 0; i < _operations.Count; i++)
         {
             var toggle = Instantiate(_toggleWithDescription, _toggleRoot);
-            toggle.Initialize(_operations[i].Name);
+            toggle.Initialize(_operations[i]);
             _toggles.Add(toggle);
         }
     }
@@ -44,21 +44,18 @@ public sealed class StartScreen : MonoBehaviour
 
     private void StartGame()
     {
-        var selectedOperations = new List<Operation>();
-        foreach (var operationName in GetSelectedOperationNames())
-        {
-            selectedOperations.Add(_operations.Find(o => o.Name.Equals(operationName)));
-        }
+        var selectedOperations = _toggles
+            .Where(t => t.IsSelected)
+            .Select(t => t.Operation)
+            .ToList();
+        
         if (selectedOperations.Count == 0)
         {
             return;
         }
+
         _game.Initialize(selectedOperations);
         _game.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
-
-    private IEnumerable<string> GetSelectedOperationNames() =>
-        _toggles.Where(t => t.IsSelected)
-            .Select(t => t.Description);
 }

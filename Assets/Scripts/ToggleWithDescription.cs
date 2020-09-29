@@ -8,10 +8,11 @@ public class ToggleWithDescription : MonoBehaviour
     [SerializeField] private Toggle _toggle = default;
 
     public bool IsSelected => _toggle.isOn;
-    public string Description => _description.text;
+    public Operation Operation { get; private set; }
 
-    public void Initialize(string description)
+    public void Initialize(Operation operation)
     {
-        _description.text = description;
+        Operation = operation;
+        _description.text = operation.Name;
     }
 }
