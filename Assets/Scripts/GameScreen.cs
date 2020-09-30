@@ -20,14 +20,11 @@ public sealed class GameScreen : MonoBehaviour
 
     private const float MatchDuration = 20f;
     private const int MaxScore = 3;
-    private const int MaxAnswerLength = 4;
-    private int _number1;
-    private int _number2;
-    private int _result;
     private int _currentScore;
     private float _timeToEndMatch;
     private List<Operation> _signs;
     private Save _save;
+    private Operation _currentOperation;
 
     public void Initialize(List<Operation> signs)
     {
@@ -175,7 +172,7 @@ public sealed class GameScreen : MonoBehaviour
 
     private void SetUserResult(int result)
     {
-        if (_userResult.text.Length < MaxAnswerLength)
+        if (_userResult.text.Length < Operation.MaxAnswerLength)
         {
             _userResult.text += result.ToString();
         }
@@ -207,7 +204,8 @@ public sealed class GameScreen : MonoBehaviour
 
     private bool IsUserAnswerCorrect()
     {
-        return int.TryParse(_userResult.text, out var result) && result == _result;
+        return int.TryParse(_userResult.text, out var result) 
+               && result == _currentOperation.Result;
     }
 
     private void ClearUserResult()
@@ -217,18 +215,9 @@ public sealed class GameScreen : MonoBehaviour
 
     private void GenerateAndPrintExpression(Operation operation)
     {
-        _number1 = Random.Range(1, 10);
-        _number2 = Random.Range(1, 10);
-
-        if (operation.IsValid(_number1, _number2))
-        {
-            _result = operation.Calculate(_number1, _number2);
-        }
-        else
-        {
-            GenerateAndPrintExpression(operation);
-        }
-        
-        _expression.text = $"{_number1.ToString()} {operation.Name} {_number2.ToString()} = ?";
+        _currentOperation = operation;
+        _currentOperation.GenerateExpression();
+        _expression.text = $"{operation.Number1.ToString()} {operation.Name} " +
+                           $"{operation.Number2.ToString()} = ?";
     }
 }

@@ -309,7 +309,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -200}
-  m_SizeDelta: {x: 70, y: 250}
+  m_SizeDelta: {x: 200, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4323984643850186592
 MonoBehaviour:
@@ -470,8 +470,8 @@ MonoBehaviour:
   _game: {fileID: 0}
   _statisticsScreen: {fileID: 0}
   _start: {fileID: 439122242}
-  _statistics: {fileID: 0}
-  _toggleWithDescription: {fileID: 7591218664611670897, guid: 5a512798e3c2221468c0a21af4e0579a,
+  _statistics: {fileID: 3656898960755175784}
+  _operationSettings: {fileID: 7591218664611670897, guid: 5a512798e3c2221468c0a21af4e0579a,
     type: 3}
   _toggleRoot: {fileID: 5753540391937165974}
 --- !u!1001 &6459454240070264013

@@ -2,7 +2,7 @@
 {
     public override string Name => "*";
 
-    public override int Calculate(int first, int second) => first * second;
+    protected override int Calculate(int first, int second) => first * second;
 
-    public override bool IsValid(int first, int second) => first != 1 && second != 1;
+    protected override bool IsValid(int first, int second) => first != 1 && second != 1;
 }

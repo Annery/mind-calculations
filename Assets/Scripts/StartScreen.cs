@@ -10,7 +10,7 @@ public sealed class StartScreen : MonoBehaviour
     [SerializeField] private StatisticsScreen _statisticsScreen = default;
     [SerializeField] private Button _start = default;
     [SerializeField] private Button _statistics = default;
-    [SerializeField] private ToggleWithDescription _toggleWithDescription = default;
+    [SerializeField] private OperationSettings _operationSettings = default;
     [SerializeField] private RectTransform _toggleRoot = default;
 
     private readonly List<Operation> _operations = new List<Operation>
@@ -21,15 +21,16 @@ public sealed class StartScreen : MonoBehaviour
         new DivisionOperation()
     };
 
-    private readonly List<ToggleWithDescription> _toggles = new List<ToggleWithDescription>();
+    private readonly List<OperationSettings> _toggles = new List<OperationSettings>();
 
     private void Awake()
     {
         _start.ReplaceOnClick(StartGame);
         _statistics.ReplaceOnClick(ShowStatisticsScreen);
+
         for (int i = 0; i < _operations.Count; i++)
         {
-            var toggle = Instantiate(_toggleWithDescription, _toggleRoot);
+            var toggle = Instantiate(_operationSettings, _toggleRoot);
             toggle.Initialize(_operations[i]);
             _toggles.Add(toggle);
         }

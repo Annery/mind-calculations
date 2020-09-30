@@ -369,7 +369,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -130}
-  m_SizeDelta: {x: 150, y: 40}
+  m_SizeDelta: {x: 180, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6979477435078424755
 CanvasRenderer:
@@ -412,67 +412,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
---- !u!114 &709771540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6149576226495359659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a181b157a776924f95c64ebcdcbbade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _clear: {fileID: 480091266450766309}
-  _backspace: {fileID: 8364769976735946635}
-  _numbers:
-  - {fileID: 5816938470514129021}
-  - {fileID: 135771668610467631}
-  - {fileID: 648345694829714546}
-  - {fileID: 2442633145580291605}
-  - {fileID: 9067265478093006703}
-  - {fileID: 1109904243929105298}
-  - {fileID: 2602423515978885079}
-  - {fileID: 1088977855489606391}
-  - {fileID: 4438571134265138455}
-  - {fileID: 1912571113995730089}
-  _expression: {fileID: 927633867946959831}
-  _userResult: {fileID: 7531990632237387777}
-  _score: {fileID: 516859757671170201}
-  _time: {fileID: 4641259103480993514}
-  _slider: {fileID: 577833784304255072}
-  _sliderFill: {fileID: 4020363227123963779}
-  _sliderColor:
-    serializedVersion: 2
-    key0: {r: 0.7830189, g: 0, b: 0, a: 1}
-    key1: {r: 0.8207547, g: 0.77352756, b: 0.15098791, a: 1}
-    key2: {r: 0.30603728, g: 0.5377358, b: 0.22067462, a: 1}
-    key3: {r: 0.15432537, g: 0.6415094, b: 0.16255777, a: 0}
-    key4: {r: 0.15432537, g: 0.6415094, b: 0.16255777, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 32768
-    ctime2: 65535
-    ctime3: 65535
-    ctime4: 65535
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 32768
-    atime2: 65535
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 3
-  _endScreen: {fileID: 0}
 --- !u!1 &6881163739981530801
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,6 +615,67 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &709771540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149576226495359659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a181b157a776924f95c64ebcdcbbade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clear: {fileID: 480091266450766309}
+  _backspace: {fileID: 8364769976735946635}
+  _numbers:
+  - {fileID: 5816938470514129021}
+  - {fileID: 135771668610467631}
+  - {fileID: 648345694829714546}
+  - {fileID: 2442633145580291605}
+  - {fileID: 9067265478093006703}
+  - {fileID: 1109904243929105298}
+  - {fileID: 2602423515978885079}
+  - {fileID: 1088977855489606391}
+  - {fileID: 4438571134265138455}
+  - {fileID: 1912571113995730089}
+  _expression: {fileID: 927633867946959831}
+  _userResult: {fileID: 7531990632237387777}
+  _score: {fileID: 516859757671170201}
+  _time: {fileID: 4641259103480993514}
+  _slider: {fileID: 577833784304255072}
+  _sliderFill: {fileID: 4020363227123963779}
+  _sliderColor:
+    serializedVersion: 2
+    key0: {r: 0.7830189, g: 0, b: 0, a: 1}
+    key1: {r: 0.8207547, g: 0.77352756, b: 0.15098791, a: 1}
+    key2: {r: 0.30603728, g: 0.5377358, b: 0.22067462, a: 1}
+    key3: {r: 0.15432537, g: 0.6415094, b: 0.16255777, a: 0}
+    key4: {r: 0.15432537, g: 0.6415094, b: 0.16255777, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 65535
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 32768
+    atime2: 65535
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 3
+  _endScreen: {fileID: 0}
 --- !u!1 &7896961453721649502
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +711,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -80}
-  m_SizeDelta: {x: 190, y: 60}
+  m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8031108064899286141
 CanvasRenderer:

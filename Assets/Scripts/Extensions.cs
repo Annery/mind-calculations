@@ -8,4 +8,10 @@ public static class Extensions
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(onClick.Invoke);
     }
+
+    public static void ReplaceOnValueChanged(this Slider slider, Action<float> onValueChanged)
+    {
+        slider.onValueChanged.RemoveAllListeners();
+        slider.onValueChanged.AddListener(onValueChanged.Invoke);
+    }
 }
