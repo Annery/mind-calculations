@@ -13,9 +13,54 @@ MonoBehaviour:
   m_Name: LevelConfigs
   m_EditorClassIdentifier: 
   Levels:
-  - _matchDuration: 0
-    _tryAmount: 0
-    _bestStars: 0
+  - _matchDuration: 20
+    _expressionCount: 5
     _operationConfigs:
     - _operationType: 0
-      _digitCapacity: 0
+      _digitCapacity: 1
+  - _matchDuration: 15
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+  - _matchDuration: 10
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+  - _matchDuration: 20
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 15
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 10
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 20
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 15
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 10
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+    - _operationType: 1
+      _digitCapacity: 1

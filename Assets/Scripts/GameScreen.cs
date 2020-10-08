@@ -92,9 +92,9 @@ public sealed class GameScreen : MonoBehaviour
             _save.WinCount++;
             _save.SessionCount++;
             _save.TotalScore += _config.ExpressionCount;
-            if ((int)_timeToEndMatch > _save.BestTime)
+            if (_config.MatchDuration - (int)_timeToEndMatch < _save.BestTime || _save.BestTime == 0)
             {
-                _save.BestTime = (int)_timeToEndMatch;
+                _save.BestTime = _config.MatchDuration - (int)_timeToEndMatch;
             }
             ShowResult("win!");
         }
