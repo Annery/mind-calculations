@@ -18,15 +18,13 @@ public sealed class GameScreen : MonoBehaviour
     [SerializeField] private Gradient _sliderColor = default;
     [SerializeField] private EndScreen _endScreen = default;
 
-    private const float MatchDuration = 20f;
-    private const int MaxScore = 3;
     private int _currentScore;
     private float _timeToEndMatch;
-    private List<Operation> _signs;
     private Save _save;
     private Operation _currentOperation;
+    private LevelConfig _config;
 
-    public void Initialize(List<Operation> signs)
+    public void Initialize(LevelConfig config)
     {
         _save = Resources.Load<Save>("Save");
 
@@ -36,9 +34,9 @@ public sealed class GameScreen : MonoBehaviour
             _numbers[i].ReplaceOnClick(() => OnButtonClick(num));
         }
 
-        _slider.maxValue = MatchDuration;
-        _timeToEndMatch = MatchDuration;
-        _signs = signs;
+        _config = config;
+        _slider.maxValue = _config.MatchDuration;
+        _timeToEndMatch = _config.MatchDuration;
 
         _clear.ReplaceOnClick(ClearUserResult);
         _backspace.ReplaceOnClick(OnBackspace);
@@ -71,7 +69,7 @@ public sealed class GameScreen : MonoBehaviour
         ClearScore();
         ShowScore();
         ShowNewExpression();
-        _timeToEndMatch = MatchDuration;
+        _timeToEndMatch = _config.MatchDuration;
     }
 
     private void ShowResult(string result)
@@ -93,7 +91,7 @@ public sealed class GameScreen : MonoBehaviour
         {
             _save.WinCount++;
             _save.SessionCount++;
-            _save.TotalScore += MaxScore;
+            _save.TotalScore += _config.ExpressionCount;
             if ((int)_timeToEndMatch > _save.BestTime)
             {
                 _save.BestTime = (int)_timeToEndMatch;
@@ -125,12 +123,12 @@ public sealed class GameScreen : MonoBehaviour
 
     private bool Lose()
     {
-        return _currentScore < MaxScore && _timeToEndMatch <= 0;
+        return _currentScore < _config.ExpressionCount && _timeToEndMatch <= 0;
     }
 
     private bool Win()
     {
-        return _currentScore == MaxScore && _timeToEndMatch >= 0;
+        return _currentScore == _config.ExpressionCount && _timeToEndMatch >= 0;
     }
 
     private void UpdateTimer()
@@ -198,8 +196,8 @@ public sealed class GameScreen : MonoBehaviour
     private void ShowNewExpression()
     {
         ClearUserResult();
-        var signIndex = Random.Range(0, _signs.Count);
-        GenerateAndPrintExpression(_signs[signIndex]);
+        var signIndex = Random.Range(0, _config.GetOperations().Count);
+        GenerateAndPrintExpression(_config.GetOperations()[signIndex]);
     }
 
     private bool IsUserAnswerCorrect()
