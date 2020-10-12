@@ -20,14 +20,12 @@ public sealed class GameScreen : MonoBehaviour
 
     private int _currentScore;
     private float _timeToEndMatch;
-    private Save _save;
     private Operation _currentOperation;
     private LevelConfig _config;
+    private int _starsCount;
 
     public void Initialize(LevelConfig config)
     {
-        _save = Resources.Load<Save>("Save");
-
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
@@ -75,7 +73,8 @@ public sealed class GameScreen : MonoBehaviour
     private void ShowResult(string result)
     {
         _endScreen.SetResult($"You {result}{Environment.NewLine}"
-                             + (Win() ? $"Score: {_currentScore}" : string.Empty));
+                             + (Win() ? $"Score: {_currentScore}" : string.Empty)
+                             + $"{Environment.NewLine}Stars: {_starsCount}");
         ClearTimer();
     }
 
@@ -89,18 +88,14 @@ public sealed class GameScreen : MonoBehaviour
     {
         if (Win())
         {
-            _save.WinCount++;
-            _save.SessionCount++;
-            _save.TotalScore += _config.ExpressionCount;
-            if (_config.MatchDuration - (int)_timeToEndMatch < _save.BestTime || _save.BestTime == 0)
-            {
-                _save.BestTime = _config.MatchDuration - (int)_timeToEndMatch;
-            }
+            SaveGlobalProgress(Save.Instance);
+            CalculateStars();
+            SaveLevelProgress(LevelConfigs.Instance.Levels.IndexOf(_config), Save.Instance.CompletedLevels);
             ShowResult("win!");
         }
         else if (Lose())
         {
-            _save.SessionCount++;
+            Save.Instance.SessionCount++;
             ShowResult("lose");
         }
         else if (IsUserAnswerCorrect())
@@ -108,6 +103,50 @@ public sealed class GameScreen : MonoBehaviour
             ShowNewExpression();
             UpdateScore();
             ShowScore();
+        }
+    }
+
+    private void SaveGlobalProgress(Save save)
+    {
+        save.WinCount++;
+        save.TotalScore += _config.ExpressionCount;
+        save.SessionCount++;
+        if (_config.MatchDuration - (int) _timeToEndMatch < save.BestTime 
+            || Mathf.Approximately(save.BestTime, 0))
+        {
+            save.BestTime = _config.MatchDuration - (int) _timeToEndMatch;
+        }
+    }
+
+    private void CalculateStars()
+    {
+        var timeToEnd = (int) _timeToEndMatch * 100 / _config.MatchDuration;
+        if (timeToEnd >= 60)
+        {
+            _starsCount = 3;
+        }
+        else if (timeToEnd < 60 && timeToEnd >= 30)
+        {
+            _starsCount = 2;
+        }
+        else
+        {
+            _starsCount = 1;
+        }
+    }
+
+    private void SaveLevelProgress(int levelIndex, List<CompletedLevel> completedLevels)
+    {
+        if (levelIndex > completedLevels.Count - 1)
+        {
+            completedLevels.Add(new CompletedLevel(_starsCount));
+        }
+        else
+        {
+            if (completedLevels[levelIndex].StarsCount < _starsCount)
+            {
+                completedLevels[levelIndex].StarsCount = _starsCount;
+            }
         }
     }
 
@@ -202,7 +241,7 @@ public sealed class GameScreen : MonoBehaviour
 
     private bool IsUserAnswerCorrect()
     {
-        return int.TryParse(_userResult.text, out var result) 
+        return int.TryParse(_userResult.text, out var result)
                && result == _currentOperation.Result;
     }
 

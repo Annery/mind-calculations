@@ -26,6 +26,7 @@ public class StartScreen : MonoBehaviour
     private void ShowCampaignScreen()
     {
         _campaignScreen.gameObject.SetActive(true);
+        _campaignScreen.Initialize();
         gameObject.SetActive(false);
     }
 

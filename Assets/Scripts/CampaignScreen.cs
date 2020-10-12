@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CampaignScreen : MonoBehaviour
@@ -9,15 +10,32 @@ public class CampaignScreen : MonoBehaviour
     [SerializeField] private LevelSettings _level = default;
     [SerializeField] private RectTransform _levelRoot = default;
 
+    private List<LevelSettings> listLevels = new List<LevelSettings>();
+
     private void Awake()
     {
         _return.ReplaceOnClick(ShowStartScreen);
 
-        var configs = Resources.Load<LevelConfigs>("LevelConfigs").Levels;
+        var configs = LevelConfigs.Instance.Levels;
         for (int i = 0; i < configs.Count; i++)
         {
-            Instantiate(_level, _levelRoot)
-                .Initialize(i + 1, configs[i], OnLevelButtonClick);
+            var lvl = Instantiate(_level, _levelRoot);
+            lvl.Initialize(i + 1, configs[i], OnLevelButtonClick);
+            lvl.LevelButton.interactable = i == 0; //TODO: hard to read, refactor
+            listLevels.Add(lvl);
+        }
+    }
+
+    public void Initialize()
+    {
+        var completedLevels = Save.Instance.CompletedLevels;
+        for (int i = 0; i < completedLevels.Count; i++)
+        {
+            listLevels[i].StarsCount = completedLevels[i].StarsCount.ToString();
+            if (i + 1 != listLevels.Count) //TODO: Hook. NRE on last element
+            {
+                listLevels[i + 1].LevelButton.interactable = true;
+            }
         }
     }
 
