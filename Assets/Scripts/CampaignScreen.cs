@@ -42,7 +42,7 @@ public class CampaignScreen : MonoBehaviour
     private void OnLevelButtonClick(LevelConfig config)
     {
         _game.gameObject.SetActive(true);
-        _game.Initialize(config);
+        _game.Initialize(config, new CampaignSaveStrategy());
         gameObject.SetActive(false);
     }
 

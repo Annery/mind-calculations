@@ -68,7 +68,7 @@ public sealed class TrainingScreen : MonoBehaviour
 
         _game.Initialize(new LevelConfig(selectedOperations, 
             float.Parse(_matchDuration.text),
-            int.Parse(_expressionCount.text)));
+            int.Parse(_expressionCount.text)), new TrainingSaveStrategy());
         _game.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }

@@ -23,9 +23,11 @@ public sealed class GameScreen : MonoBehaviour
     private Operation _currentOperation;
     private LevelConfig _config;
     private int _starsCount;
+    private SaveStrategy _save;
 
-    public void Initialize(LevelConfig config)
+    public void Initialize(LevelConfig config, SaveStrategy save)
     {
+        _save = save;
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
@@ -88,14 +90,13 @@ public sealed class GameScreen : MonoBehaviour
     {
         if (Win())
         {
-            SaveGlobalProgress(Save.Instance);
             CalculateStars();
-            SaveLevelProgress(LevelConfigs.Instance.Levels.IndexOf(_config), Save.Instance.CompletedLevels);
+            _save.Win(_config, _starsCount, _timeToEndMatch);
             ShowResult("win!");
         }
         else if (Lose())
         {
-            Save.Instance.SessionCount++;
+            _save.Loose();
             ShowResult("lose");
         }
         else if (IsUserAnswerCorrect())
@@ -103,18 +104,6 @@ public sealed class GameScreen : MonoBehaviour
             ShowNewExpression();
             UpdateScore();
             ShowScore();
-        }
-    }
-
-    private void SaveGlobalProgress(Save save)
-    {
-        save.WinCount++;
-        save.TotalScore += _config.ExpressionCount;
-        save.SessionCount++;
-        if (_config.MatchDuration - (int) _timeToEndMatch < save.BestTime 
-            || Mathf.Approximately(save.BestTime, 0))
-        {
-            save.BestTime = _config.MatchDuration - (int) _timeToEndMatch;
         }
     }
 
@@ -132,21 +121,6 @@ public sealed class GameScreen : MonoBehaviour
         else
         {
             _starsCount = 1;
-        }
-    }
-
-    private void SaveLevelProgress(int levelIndex, List<CompletedLevel> completedLevels)
-    {
-        if (levelIndex > completedLevels.Count - 1)
-        {
-            completedLevels.Add(new CompletedLevel(_starsCount));
-        }
-        else
-        {
-            if (completedLevels[levelIndex].StarsCount < _starsCount)
-            {
-                completedLevels[levelIndex].StarsCount = _starsCount;
-            }
         }
     }
 
