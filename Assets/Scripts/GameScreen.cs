@@ -22,7 +22,6 @@ public sealed class GameScreen : MonoBehaviour
     private float _timeToEndMatch;
     private Operation _currentOperation;
     private LevelConfig _config;
-    private int _starsCount;
     private SaveStrategy _save;
 
     public void Initialize(LevelConfig config, SaveStrategy save)
@@ -76,7 +75,7 @@ public sealed class GameScreen : MonoBehaviour
     {
         _endScreen.SetResult($"You {result}{Environment.NewLine}"
                              + (Win() ? $"Score: {_currentScore}" : string.Empty)
-                             + $"{Environment.NewLine}Stars: {_starsCount}");
+                             + $"{Environment.NewLine}Stars: {_config.GetStarsByTime(_timeToEndMatch)}");
         ClearTimer();
     }
 
@@ -90,8 +89,7 @@ public sealed class GameScreen : MonoBehaviour
     {
         if (Win())
         {
-            CalculateStars();
-            _save.Win(_config, _starsCount, _timeToEndMatch);
+            _save.Win(_config, _timeToEndMatch);
             ShowResult("win!");
         }
         else if (Lose())
@@ -104,23 +102,6 @@ public sealed class GameScreen : MonoBehaviour
             ShowNewExpression();
             UpdateScore();
             ShowScore();
-        }
-    }
-
-    private void CalculateStars()
-    {
-        var timeToEnd = (int) _timeToEndMatch * 100 / _config.MatchDuration;
-        if (timeToEnd >= 60)
-        {
-            _starsCount = 3;
-        }
-        else if (timeToEnd < 60 && timeToEnd >= 30)
-        {
-            _starsCount = 2;
-        }
-        else
-        {
-            _starsCount = 1;
         }
     }
 

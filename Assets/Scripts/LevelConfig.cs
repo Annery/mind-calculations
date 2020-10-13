@@ -25,4 +25,19 @@ public class LevelConfig
     public List<Operation> GetOperations() => _operations ?? _operationConfigs
         .Select(t => t.GetOperation())
         .ToList();
+
+    public int GetStarsByTime(float timeToEndMatch)
+    {
+        var percentageTimeToEnd = (int) timeToEndMatch * 100 / MatchDuration;
+        if (percentageTimeToEnd >= 60)
+        {
+            return 3;
+        }
+        if (percentageTimeToEnd < 60 && percentageTimeToEnd >= 30)
+        {
+            return 2;
+        }
+
+        return 1;
+    }
 }

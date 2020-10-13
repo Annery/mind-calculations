@@ -12,10 +12,10 @@ public abstract class SaveStrategy
         _levelsConfigs = LevelConfigs.Instance.Levels;
     }
 
-    public void Win(LevelConfig config, int starsCount, float timeToEndMatch)
+    public void Win(LevelConfig config, float timeToEndMatch)
     {
         SaveGlobalProgress(config, timeToEndMatch);
-        SaveLevelProgress(_levelsConfigs.IndexOf(config), starsCount);
+        SaveLevelProgress(_levelsConfigs.IndexOf(config), config.GetStarsByTime(timeToEndMatch));
     }
 
     public void Loose()
