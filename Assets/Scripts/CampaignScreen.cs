@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CampaignScreen : MonoBehaviour
+public sealed class CampaignScreen : MonoBehaviour
 {
     [SerializeField] private StartScreen _start = default;
     [SerializeField] private GameScreen _game = default;

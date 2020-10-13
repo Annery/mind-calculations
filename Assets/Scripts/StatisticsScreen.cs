@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatisticsScreen : MonoBehaviour
+public sealed class StatisticsScreen : MonoBehaviour
 {
     [SerializeField] private StartScreen _start = default;
     [SerializeField] private Button _return = default;

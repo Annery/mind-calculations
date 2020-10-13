@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -8,6 +7,7 @@ public sealed class GameScreen : MonoBehaviour
 {
     [SerializeField] private Button _clear = default;
     [SerializeField] private Button _backspace = default;
+    [SerializeField] private Button _settings = default;
     [SerializeField] private Button[] _numbers = default;
     [SerializeField] private Text _expression = default;
     [SerializeField] private Text _userResult = default;
@@ -17,6 +17,7 @@ public sealed class GameScreen : MonoBehaviour
     [SerializeField] private Image _sliderFill = default;
     [SerializeField] private Gradient _sliderColor = default;
     [SerializeField] private EndScreen _endScreen = default;
+    [SerializeField] private OptionsScreen _optionsScreen = default;
 
     private int _currentScore;
     private float _timeToEndMatch;
@@ -39,7 +40,9 @@ public sealed class GameScreen : MonoBehaviour
 
         _clear.ReplaceOnClick(ClearUserResult);
         _backspace.ReplaceOnClick(OnBackspace);
+        _settings.ReplaceOnClick(ShowSettingsScreen);
 
+        _currentScore = 0; //TODO: refactor
         ShowNewExpression();
         ShowScore();
     }
@@ -53,8 +56,26 @@ public sealed class GameScreen : MonoBehaviour
         }
 
         ShowTimer();
-        UpdateTimer();
+        if (!IsTimerPaused())
+        {
+            UpdateTimer();
+        }
         CheckResult();
+    }
+
+    public void Restart()
+    {
+        Initialize(_config, _save);
+    }
+
+    private void ShowSettingsScreen()
+    {
+        _optionsScreen.gameObject.SetActive(true);
+    }
+
+    private bool IsTimerPaused()
+    {
+        return _optionsScreen.gameObject.activeSelf;
     }
 
     private void ShowEndScreen()
@@ -187,7 +208,7 @@ public sealed class GameScreen : MonoBehaviour
         _currentScore++;
     }
 
-    private void ShowNewExpression()
+    public void ShowNewExpression()
     {
         ClearUserResult();
         var signIndex = Random.Range(0, _config.GetOperations().Count);

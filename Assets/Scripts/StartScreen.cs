@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StartScreen : MonoBehaviour
+public sealed class StartScreen : MonoBehaviour
 {
     [SerializeField] private TrainingScreen _trainingScreen = default;
     [SerializeField] private StatisticsScreen _statisticsScreen = default;
