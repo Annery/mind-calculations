@@ -230,7 +230,7 @@ PrefabInstance:
     - target: {fileID: 4095038910826394771, guid: bf5d929b8d185264787c1c136051f1f8,
         type: 3}
       propertyPath: m_Name
-      value: End Screen
+      value: EndScreen
       objectReference: {fileID: 0}
     - target: {fileID: 4095038910826394771, guid: bf5d929b8d185264787c1c136051f1f8,
         type: 3}

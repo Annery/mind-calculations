@@ -19,7 +19,6 @@ public sealed class EndScreen : MonoBehaviour
     {
         _start.gameObject.SetActive(true);
         gameObject.SetActive(false);
-        _game.ResetTimer();
     }
 
     public void SetResult(string textResult)
@@ -29,8 +28,8 @@ public sealed class EndScreen : MonoBehaviour
 
     private void RestartGame()
     {
+        _game.RestartGame();
         _game.gameObject.SetActive(true);
         gameObject.SetActive(false);
-        _game.ResetTimer();
     }
 }
