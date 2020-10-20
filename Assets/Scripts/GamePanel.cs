@@ -18,31 +18,36 @@ public sealed class GamePanel : MonoBehaviour
     [SerializeField] private Gradient _sliderColor = default;
 
     private int _currentScore;
-    private float _timeToEndMatch;
     private Operation _currentOperation;
     private LevelConfig _config;
     private SaveStrategy _save;
     private GameScreen _screen;
+    private Timer _timer;
 
     public void Initialize(LevelConfig config, SaveStrategy save, GameScreen screen)
     {
         _screen = screen;
-        _options.ReplaceOnClick(screen.ShowOptionsPanel);
+        _options.ReplaceOnClick(() =>
+        {
+            _timer.IsPaused = true;
+            screen.ShowOptionsPanel();
+        });
         Initialize(config, save);
     }
 
     public void Initialize(LevelConfig config, SaveStrategy save)
     {
-        _save = save;
+       
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
             _numbers[i].ReplaceOnClick(() => OnButtonClick(num));
         }
 
+        _save = save;
         _config = config;
+        _timer = new Timer(_config.MatchDuration);
         _slider.maxValue = _config.MatchDuration;
-        _timeToEndMatch = _config.MatchDuration;
 
         _clear.ReplaceOnClick(ClearUserResult);
         _backspace.ReplaceOnClick(OnBackspace);
@@ -54,29 +59,24 @@ public sealed class GamePanel : MonoBehaviour
 
     private void Update()
     {
-        if (IsMatchEnded())
+        if (_timer.IsPaused)
         {
             return;
         }
-        if (IsTimerActive())
-        {
-            UpdateTimer();
-        }
+        UpdateProgress();
         CheckResult();
     }
-
-    private bool IsTimerActive() => gameObject.activeSelf;
 
     private void GameEnd(string result) => 
         _screen.GameEnd($"You {result}{ Environment.NewLine}" + 
                         (IsWon() ? $"Score: {_currentScore}" : string.Empty) + 
-                        $"{ Environment.NewLine}Stars: { _config.GetStarsByTime(_timeToEndMatch)}");
+                        $"{ Environment.NewLine}Stars: { _config.GetStarsByTime(_timer.TimeToEnd)}");
 
     private void CheckResult()
     {
         if (IsWon())
         {
-            _save.Win(_config, _timeToEndMatch);
+            _save.Win(_config, _timer.TimeToEnd);
             GameEnd("win!");
         }
         else if (IsLost())
@@ -92,27 +92,20 @@ public sealed class GamePanel : MonoBehaviour
         }
     }
 
-    private bool IsLost() => _currentScore < _config.ExpressionCount && _timeToEndMatch <= 0;
+    private bool IsLost() => _currentScore < _config.ExpressionCount && _timer.TimeToEnd <= 0;
 
-    private bool IsWon() => _currentScore == _config.ExpressionCount && _timeToEndMatch > 0;
+    private bool IsWon() => _currentScore == _config.ExpressionCount && _timer.TimeToEnd > 0;
 
-    private void UpdateTimer()
+    private void UpdateProgress()
     {
-        _timeToEndMatch -= Time.deltaTime;
+        _timer.Update();
         _sliderFill.color = _sliderColor.Evaluate(Mathf.Lerp(0, 1, _slider.value / _slider.maxValue));
-        _time.text = $"Time: {(int)_timeToEndMatch}";
-        _slider.value = (int)_timeToEndMatch;
+        _time.text = $"Time: {(int)_timer.TimeToEnd}";
+        _slider.value = (int)_timer.TimeToEnd;
     }
-
-    private bool IsMatchEnded() => _timeToEndMatch <= 0;
 
     private void OnButtonClick(int number)
     {
-        if (IsMatchEnded())
-        {
-            return;
-        }
-
         int.TryParse(_userResult.text, out var result);
         if (number == 0 && string.IsNullOrEmpty(_userResult.text))
         {
@@ -151,7 +144,7 @@ public sealed class GamePanel : MonoBehaviour
 
     private void UpdateScore() => _currentScore++;
     
-    public void ShowNewExpression()
+    private void ShowNewExpression()
     {
         ClearUserResult();
         var signIndex = Random.Range(0, _config.GetOperations().Count);
@@ -172,4 +165,10 @@ public sealed class GamePanel : MonoBehaviour
     }
 
     public void Restart() => Initialize(_config, _save);
+
+    public void Resume()
+    {
+        _timer.IsPaused = false;
+        ShowNewExpression();
+    }
 }

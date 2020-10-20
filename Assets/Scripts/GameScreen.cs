@@ -28,7 +28,7 @@ public sealed class GameScreen : MonoBehaviour
 
     public void ResumeGame()
     {
-        _gamePanel.ShowNewExpression();
+        _gamePanel.Resume();
         ShowGamePanel();
     }
 
