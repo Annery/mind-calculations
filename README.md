@@ -1,1 +1,1 @@
-# mind-calculations
+This is logical game with different funny mobile mechanics. Feel free to fork and reuse code. Have fun!
