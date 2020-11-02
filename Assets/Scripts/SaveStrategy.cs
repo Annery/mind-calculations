@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SaveStrategy
@@ -21,6 +22,12 @@ public abstract class SaveStrategy
     public void Loose()
     {
         _save.SessionCount++;
+        DecreaseLife();
+    }
+
+    protected virtual void DecreaseLife()
+    {
+        _save.Lives--;
     }
 
     private void SaveGlobalProgress(LevelConfig config, float timeToEndMatch)

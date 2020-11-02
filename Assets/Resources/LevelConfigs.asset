@@ -23,7 +23,7 @@ MonoBehaviour:
     _operationConfigs:
     - _operationType: 0
       _digitCapacity: 1
-  - _matchDuration: 10
+  - _matchDuration: 1
     _expressionCount: 5
     _operationConfigs:
     - _operationType: 0
@@ -51,6 +51,27 @@ MonoBehaviour:
     - _operationType: 1
       _digitCapacity: 1
   - _matchDuration: 15
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 10
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 10
+    _expressionCount: 5
+    _operationConfigs:
+    - _operationType: 0
+      _digitCapacity: 1
+    - _operationType: 1
+      _digitCapacity: 1
+  - _matchDuration: 10
     _expressionCount: 5
     _operationConfigs:
     - _operationType: 0

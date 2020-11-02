@@ -37,7 +37,6 @@ public sealed class GamePanel : MonoBehaviour
 
     public void Initialize(LevelConfig config, SaveStrategy save)
     {
-       
         for (var i = 0; i < _numbers.Length; i++)
         {
             var num = i;
@@ -67,10 +66,12 @@ public sealed class GamePanel : MonoBehaviour
         CheckResult();
     }
 
-    private void GameEnd(string result) => 
-        _screen.GameEnd($"You {result}{ Environment.NewLine}" + 
-                        (IsWon() ? $"Score: {_currentScore}" : string.Empty) + 
-                        $"{ Environment.NewLine}Stars: { _config.GetStarsByTime(_timer.TimeToEnd)}");
+    private void GameEnd(string result) =>
+        _screen.GameEnd($"You {result}{Environment.NewLine}" +
+                        (IsWon()
+                            ? $"Score: {_currentScore}{Environment.NewLine}" +
+                              $"Stars: { _config.GetStarsByTime(_timer.TimeToEnd)}"
+                            : string.Empty));
 
     private void CheckResult()
     {
@@ -143,7 +144,7 @@ public sealed class GamePanel : MonoBehaviour
     private void ShowScore() => _score.text = $"Score: {_currentScore}";
 
     private void UpdateScore() => _currentScore++;
-    
+
     private void ShowNewExpression()
     {
         ClearUserResult();

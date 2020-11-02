@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public sealed class StartScreen : MonoBehaviour
@@ -15,6 +16,7 @@ public sealed class StartScreen : MonoBehaviour
         _training.ReplaceOnClick(ShowTrainingScreen);
         _statistics.ReplaceOnClick(ShowStatisticsScreen);
         _campaign.ReplaceOnClick(ShowCampaignScreen);
+        CoroutineManager.Run(Save.Instance.RestoreLivesTracing());
     }
 
     private void ShowTrainingScreen()
