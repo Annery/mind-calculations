@@ -16,7 +16,7 @@ public sealed class StartScreen : MonoBehaviour
         _training.ReplaceOnClick(ShowTrainingScreen);
         _statistics.ReplaceOnClick(ShowStatisticsScreen);
         _campaign.ReplaceOnClick(ShowCampaignScreen);
-        CoroutineManager.Run(Save.Instance.RestoreLivesTracing());
+        CoroutineManager.Run(Save.Instance.RestoreLivesTracking());
     }
 
     private void ShowTrainingScreen()
